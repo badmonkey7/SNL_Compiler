@@ -35,7 +35,7 @@ grammar = {
          'VarDeclaration': {0: ['VAR', 'VarDecList']},
         'VarDecList': {0: ['TypeName', 'VarIdList', ';', 'VarDecMore']},
          'VarDecMore': {0: ['ε'], 1: ['VarDecList']},
-        'VarIdList': {0: ['id', 'VarIdMore']},
+        'VarIdList': {0: ['ID', 'VarIdMore']},
          'VarIdMore': {0: ['ε'], 1: [',', 'VarIdList']},
         'ProcDec': {0: ['ε'], 1: ['ProcDeclaration']},
          'ProcDeclaration': {
@@ -85,7 +85,7 @@ grammar = {
     # 非终极符
     "VN": ["ActParamList", "ActParamMore", "AddOp", "ArrayType", "AssCall", "AssignmentRest", "BaseType", "CallStmRest", "CmpOp", "ConditionalStm", "DeclarePart", "Exp", "Factor", "FidMore", "FieldDecList", "FieldDecMore", "FieldVar", "FieldVarMore", "FormList", "IdList", "IdMore", "InputStm", "Invar", "LoopStm", "Low", "MultOp", "OtherFactor", "OtherRelE", "OtherTerm", "OutputStm", "Param", "ParamDecList", "ParamList", "ParamMore", "ProcBody", "ProcDec", "ProcDecMore", "ProcDecPart", "ProcDeclaration", "ProcName", "Program", "ProgramBody", "ProgramHead", "ProgramName", "RecType", "RelExp", "ReturnStm", "Stm", "StmList", "StmMore", "StructureType", "Term", "Top", "TypeDec", "TypeDecList", "TypeDecMore", "TypeDeclaration", "TypeId", "TypeName", "VarDec", "VarDecList", "VarDecMore", "VarDeclaration", "VarIdList", "VarIdMore", "VariMore", "Variable"],
     # 终极符
-    "VT": ["(", ")", "*", "+", ",", "-", ".", "..", "/", ":=", ";", "<", "=", "ARRAY", "BEGIN", "CHAR", "DO", "ELSE", "END", "ENDWH", "FI", "ID", "IF", "INTC", "INTEGER", "OF", "PROCEDURE", "PROGRAM", "READ", "RECORD", "RETURN", "THEN", "TYPE", "VAR", "WHILE", "WRITE", "[", "]", "id", "low", "top"],
+    "VT": ["(", ")", "*", "+", ",", "-", ".", "..", "/", ":=", ";", "<", "=", "ARRAY", "BEGIN", "CHAR", "DO", "ELSE", "END", "ENDWH", "FI", "ID", "IF", "INTC", "INTEGER", "OF", "PROCEDURE", "PROGRAM", "READ", "RECORD", "RETURN", "THEN", "TYPE", "VAR", "WHILE", "WRITE", "[", "]", "low", "top"],
     # 空
     "NN": ["ε"]
 }
@@ -186,6 +186,14 @@ def ll1Table(grammar):
     follow = followSet(grammar)
     # loop all P
     for p in grammar["P"]:
+        # pFirst = first[p]
+        # possible = set()
+        # if 'ε' in pFirst:
+        #     possible.remove('ε')
+        #     possible = possible.union(possible,follow[p])
+        # else:
+        #     possible = possible.union(pFirst)
+        #
         sons = grammar["P"][p]
         sonNum = len(sons)
         for i in range(sonNum):
@@ -193,18 +201,71 @@ def ll1Table(grammar):
             # print(son)
             head = son[0]
             if head in grammar["VT"]:
-                table[p][head] = p+"->"+"".join(son)
+                table[p][head] = son
+            # elif
             else:
                 possible = set()
-                if head in grammar["VN"]:
-                    if 'ε' in first[head]:
-                        first[head].remove('ε')
-                        possible = possible.union(first,follow[p])
-                    else:
-                        possible = possible.union(first)
-                elif head == 'ε':
-                    possible = possible.union(follow[p])
+                # print(son)
+                for element in son:
+                    if element in grammar["VN"]:
+                        tmp = first[element].copy()
+                        if 'ε' in tmp:
+                            tmp.remove('ε')
+                            possible = possible.union(tmp,follow[p])
+                        else:
+                            possible = possible.union(tmp)
+                            break
+                    elif element == 'ε':
+                        possible = possible.union(follow[p])
+                    elif element in grammar["VT"]:
+                        # print(son)
+                        possible.add(element)
+                        break
+                # print(p+":" + str(possible))
                 for poss in possible:
-                    table[p][poss] = p+"->"+"".join(son)
+                    table[p][poss] = son
     return table
 
+table = ll1Table(grammar)
+
+stack = [grammar["S"]]
+tokens = open("demo.txt",'r').readlines()
+tokenStack = []
+for token in tokens:
+    token = eval(token.strip())
+    tokenType = token[0]
+    tokenStack.append(tokenType)
+
+DEBUG = 1
+
+if DEBUG == 1:
+    for token in tokens:
+        token = eval(token.strip())
+        tokenType = token[0]
+        tokenVal = token[-1]
+        done = False
+        error = False
+        while not done:
+            top = stack.pop()
+            while top == 'ε':
+                # print(stack)
+                top = stack.pop()
+            if top == tokenType:
+                done = True
+                print(stack)
+                print(tokenStack)
+                # print(choice)
+                print("+"*200)
+                tokenStack.pop(0)
+                break
+            try:
+                choice = table[top][tokenType]
+            except:
+                break
+            if choice == "error":
+                done = True
+                error = True
+                break
+            else:
+                for i in choice[::-1]:
+                    stack.append(i)

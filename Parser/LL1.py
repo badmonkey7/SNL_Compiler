@@ -85,7 +85,7 @@ grammar = {
     # 非终极符
     "VN": ["ActParamList", "ActParamMore", "AddOp", "ArrayType", "AssCall", "AssignmentRest", "BaseType", "CallStmRest", "CmpOp", "ConditionalStm", "DeclarePart", "Exp", "Factor", "FidMore", "FieldDecList", "FieldDecMore", "FieldVar", "FieldVarMore", "FormList", "IdList", "IdMore", "InputStm", "Invar", "LoopStm", "Low", "MultOp", "OtherFactor", "OtherRelE", "OtherTerm", "OutputStm", "Param", "ParamDecList", "ParamList", "ParamMore", "ProcBody", "ProcDec", "ProcDecMore", "ProcDecPart", "ProcDeclaration", "ProcName", "Program", "ProgramBody", "ProgramHead", "ProgramName", "RecType", "RelExp", "ReturnStm", "Stm", "StmList", "StmMore", "StructureType", "Term", "Top", "TypeDec", "TypeDecList", "TypeDecMore", "TypeDeclaration", "TypeId", "TypeName", "VarDec", "VarDecList", "VarDecMore", "VarDeclaration", "VarIdList", "VarIdMore", "VariMore", "Variable"],
     # 终极符
-    "VT": ["(", ")", "*", "+", ",", "-", ".", "..", "/", ":=", ";", "<", "=", "ARRAY", "BEGIN", "CHAR", "DO", "ELSE", "END", "ENDWH", "FI", "ID", "IF", "INTC", "INTEGER", "OF", "PROCEDURE", "PROGRAM", "READ", "RECORD", "RETURN", "THEN", "TYPE", "VAR", "WHILE", "WRITE", "[", "]", "low", "top"],
+    "VT": ["(", ")", "*", "+", ",", "-", ".", "..", "/", ":=", ";", "<", "=", "ARRAY", "BEGIN", "CHAR", "DO", "ELSE", "END", "ENDWH", "FI", "ID", "IF", "INTC", "INTEGER", "OF", "PROCEDURE", "PROGRAM", "READ", "RECORD", "RETURN", "THEN", "TYPE", "VAR", "WHILE", "WRITE", "[", "]"],
     # 空
     "NN": ["ε"]
 }
@@ -160,14 +160,19 @@ def followSet(grammar):
                         if j == sonNum-1:
                             allFollowSet[grandSon]=allFollowSet[grandSon].union(allFollowSet[p])
                         else:
-                            backSon = son[j+1]
+                            k = j+1
+                            backSon = son[k]
                             backSonFirst = firstSet(grammar,backSon)
-                            # print(backSon,backSonFirst)
-                            if 'ε' in backSonFirst:
+                            while k<sonNum and 'ε' in backSonFirst:
                                 backSonFirst.remove('ε')
-                                allFollowSet[grandSon]=allFollowSet[grandSon].union(allFollowSet[p],backSonFirst)
-                            else:
-                                allFollowSet[grandSon]=allFollowSet[grandSon].union(backSonFirst)
+                                allFollowSet[grandSon] = allFollowSet[grandSon].union(backSonFirst)
+                                k += 1
+                                if k == sonNum:
+                                    allFollowSet[grandSon] =  allFollowSet[grandSon].union(allFollowSet[p])
+                                    break
+                                backSon = son[k]
+                                backSonFirst = firstSet(grammar, backSon)
+                            allFollowSet[grandSon]=allFollowSet[grandSon].union(backSonFirst)
 
         curStatus = [len(allFollowSet[vn]) for vn in grammar["VN"]]
         if curStatus == preStatus:
@@ -186,14 +191,7 @@ def ll1Table(grammar):
     follow = followSet(grammar)
     # loop all P
     for p in grammar["P"]:
-        # pFirst = first[p]
-        # possible = set()
-        # if 'ε' in pFirst:
-        #     possible.remove('ε')
-        #     possible = possible.union(possible,follow[p])
-        # else:
-        #     possible = possible.union(pFirst)
-        #
+
         sons = grammar["P"][p]
         sonNum = len(sons)
         for i in range(sonNum):
@@ -226,6 +224,7 @@ def ll1Table(grammar):
                     table[p][poss] = son
     return table
 
+
 table = ll1Table(grammar)
 
 stack = [grammar["S"]]
@@ -235,8 +234,9 @@ for token in tokens:
     token = eval(token.strip())
     tokenType = token[0]
     tokenStack.append(tokenType)
-
-DEBUG = 1
+tree = []
+dTree = []
+DEBUG = 0
 
 if DEBUG == 1:
     for token in tokens:
@@ -250,12 +250,9 @@ if DEBUG == 1:
             while top == 'ε':
                 # print(stack)
                 top = stack.pop()
+
             if top == tokenType:
                 done = True
-                print(stack)
-                print(tokenStack)
-                # print(choice)
-                print("+"*200)
                 tokenStack.pop(0)
                 break
             try:
@@ -267,5 +264,8 @@ if DEBUG == 1:
                 error = True
                 break
             else:
+                tree.append(choice)
+                dTree.append(top)
                 for i in choice[::-1]:
                     stack.append(i)
+

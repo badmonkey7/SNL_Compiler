@@ -10,7 +10,7 @@ grammar = {
     "S":"Program",
     # 产生式
     "P":{
-        'Program': {0: ['ProgramHead', 'DeclarePart', 'ProgramBody']},
+        'Program': {0: ['ProgramHead', 'DeclarePart', 'ProgramBody','.']},
         'ProgramHead': {0: ['PROGRAM', 'ProgramName']},
          'ProgramName': {0: ['ID']},
         'DeclarePart': {0: ['TypeDec', 'VarDec', 'ProcDec']},
@@ -89,7 +89,6 @@ grammar = {
     # 空
     "NN": ["ε"]
 }
-
 
 def firstSet(grammar,leftSymbol):
     '''
@@ -179,7 +178,6 @@ def followSet(grammar):
             done = True
     return allFollowSet
 
-
 def ll1Table(grammar):
     first = {}
     table = {}
@@ -224,85 +222,11 @@ def ll1Table(grammar):
                     table[p][poss] = son
     return table
 
-
-table = ll1Table(grammar)
-node_count = (x for x in range(100000))
-class AstNode(object):
-    """node of ast """
-    def __init__(self,tokenType,tokenVal="",father=None):
-        self.tokenType = tokenType
-        self.tokenVal = tokenVal
-        self.father = father
-        self.child = []
-        self.brother = []
-        self.id = next(node_count)
-
-    def getTokenType(self):
-        return self.tokenType
-
-    def getTokenVal(self):
-        return self.tokenVal
-
-    def getId(self):
-        return self.id
-
-    def getFather(self):
-        return self.father
-
-    def __repr__(self):
-        return "astNode %d %s\n"%(self.id,self.tokenType)
-
-    def insertChild(self,node):
-        """ add a ast node to current node"""
-        if node and not isinstance(node,AstNode):
-            raise ValueError("child node must be an astNode")
-        self.child.append(node)
-        node.brother = self.child
-        node.father = self
-
-    def step(self):
-        cur = self
-        while cur.id != 0 and cur.brother[::-1].index(cur) == 0:
-            cur = cur.father
-        if cur.id != 0:
-            cur = cur.brother[cur.brother.index(cur)+1]
-        return cur
-
-    def __len__(self):
-        return len(self.child)
-
-    def dump(self,depth=0):
-        tab = '     '*(depth-1)+" |- " if depth>0 else ""
-        print("%s%s"%(tab,self.tokenType))
-        for child in self.child:
-            child.dump(depth+1)
-
-import json
-class AstNodeEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj,AstNode):
-            return {
-                "TokenType":obj.tokenType,
-                "child":[{"TokenType": child.tokenType,"child": child.child} for child in obj.child]
-            }
-        return json.JSONEncoder.default(self,obj)
-
-def AstNodeDecoder(obj):
-    if isinstance(obj,dict) and "TokenType" in obj:
-        node = AstNode(obj["TokenType"])
-        for childNode in obj.get("child"):
-            node.insertChild(AstNodeDecoder(childNode))
-        return node
-
-    return obj
-
-tokens = open("demo.txt",'r').readlines()
-
-
+from  Parser.AST import *
 
 def generateAST(tokens):
     tokenStack = []
-
+    table = ll1Table(grammar)
     for token in tokens:
         token = eval(token.strip())
         tokenType = token[0]
@@ -315,7 +239,7 @@ def generateAST(tokens):
     for token in tokens:
         token = eval(token.strip())
         tokenType = token[0]
-        tokenVal = token[-1]
+        tokenVal = token[1]
         done = False
         error = False
         while not done:
@@ -323,12 +247,14 @@ def generateAST(tokens):
             while top == 'ε':
                 # print(stack)
                 top = stack.pop()
-                current.insertChild(AstNode("ε"))
+                current.insertChild(AstNode("ε","ε"))
                 current = current.step()
 
             if top == tokenType:
                 done = True
                 tokenStack.pop(0)
+                current.tokenType = tokenType
+                current.tokenVal = tokenVal
                 current = current.step()
                 break
             try:
@@ -338,6 +264,7 @@ def generateAST(tokens):
             if choice == "error":
                 done = True
                 error = True
+                print("error",token)
                 break
             else:
                 # for
@@ -348,18 +275,13 @@ def generateAST(tokens):
                 current = current.child[0]
     return root
 
-root = generateAST(tokens)
+if __name__ == '__main__':
+    tokens = open("demo.txt",'r').readlines()
+    root = generateAST(tokens)
+    ast = open("ast.txt","w")
+    root.dump(file=ast)
+    ast.close()
 
-root.dump()
 
 
-# astfile = open("ast.txt","w")
-# res = json.dumps(root,cls=AstNodeEncoder)
-# json.dump(root,astfile,cls=AstNodeEncoder)
-# astfile.close()
-
-# astfile = open("ast.txt","r")
-# root2 = json.load(astfile,object_hook=AstNodeDecoder)
-# astfile.close()
-# root2.dump()
 

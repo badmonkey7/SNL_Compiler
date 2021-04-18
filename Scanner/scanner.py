@@ -14,7 +14,9 @@ class State():
     CHAR="char"
     RANGE="range"
     DONE="done"
-from token import *
+
+from Scanner.token import *
+
 import sys
 
 HELP = '''
@@ -32,7 +34,7 @@ def Scan(scanner):
         if state == State.START:
             nxtChar = scanner[nxt]
             # print(nxtChar.isalpha())
-            while nxt < length and (nxtChar == ' ' or nxtChar == '\n' or nxtChar == '\r'):
+            while nxt < length and (nxtChar == ' ' or nxtChar == '\n' or nxtChar == '\r' or nxtChar == '\t'):
                 if nxtChar == '\n':
                     line += 1
                 nxt += 1
@@ -52,6 +54,14 @@ def Scan(scanner):
                 elif nxtChar == ":" and scanner[nxt+1] =='=':
                     nxt +=1
                     nxtChar = ":="
+                elif nxtChar == "{":
+                    while nxtChar != "}":
+                        nxt += 1
+                        nxtChar = scanner[nxt]
+                    nxt += 1
+                    nxtChar = scanner[nxt]
+                    state = State.START
+                    continue
                 # else:
                     # print(nxt,nxtChar,state,"error")
                     # break
@@ -62,7 +72,7 @@ def Scan(scanner):
                     nxt += 1
                     state = State.START
                 else:
-                    print(nxt,nxtChar,state,"error")
+                    print(nxt,nxtChar,state,"error",line,scanner[nxt:])
                     break
                     # pass
                 # 赋值，注释之类的
@@ -90,29 +100,35 @@ def Scan(scanner):
                 if nxt == length:
                     break
                 nxtChar = scanner[nxt]
-            tokenList.append((tokenType.INTEGER,int(currentNum),line))
+            tokenList.append((tokenType.INTC,int(currentNum),line))
             state = State.START
     return tokenList
 
 if __name__ == '__main__':
-    if len(sys.argv) <2:
-        print(HELP)
-    elif len(sys.argv) ==2:
-        filename = sys.argv[1]
-        output = filename.split('.')[0]+"_scan.txt"
-    else:
-        filename = sys.argv[1]
-        output = sys.argv[2]
-    try:
-        scanner = list(open(filename,"r").read())
-        tokens = Scan(scanner)
-        out = open(output,"w")
-        for i in tokens:
-            out.write(str(i)+"\n")
-        out.close()
-    except:
-        print("file not exist or permission denied\n")
-        exit(1)
+    scanner = list(open("demo.txt","r").read())
+    tokens = Scan(scanner)
+    out = open("demo_scan.txt","w")
+    for i in tokens:
+        out.write(str(i)+"\n")
+    out.close()
+    # if len(sys.argv) <2:
+    #     print(HELP)
+    # elif len(sys.argv) ==2:
+    #     filename = sys.argv[1]
+    #     output = filename.split('.')[0]+"_scan.txt"
+    # else:
+    #     filename = sys.argv[1]
+    #     output = sys.argv[2]
+    # try:
+    #     scanner = list(open(filename,"r").read())
+    #     tokens = Scan(scanner)
+    #     out = open(output,"w")
+    #     for i in tokens:
+    #         out.write(str(i)+"\n")
+    #     out.close()
+    # except:
+    #     print("file not exist or permission denied\n")
+    #     exit(1)
 
 
 

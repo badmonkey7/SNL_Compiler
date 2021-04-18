@@ -1,0 +1,612 @@
+Program  
+ |- ProgramHead  
+      |- PROGRAM  program
+      |- ProgramName  
+           |- ID  example
+ |- DeclarePart  
+      |- TypeDec  
+           |- TypeDeclaration  
+                |- TYPE  type
+                |- TypeDecList  
+                     |- TypeId  
+                          |- ID  w1
+                     |- =  =
+                     |- TypeName  
+                          |- BaseType  
+                               |- INTEGER  integer
+                     |- ;  ;
+                     |- TypeDecMore  
+                          |- TypeDecList  
+                               |- TypeId  
+                                    |- ID  w2
+                               |- =  =
+                               |- TypeName  
+                                    |- StructureType  
+                                         |- RecType  
+                                              |- RECORD  record
+                                              |- FieldDecList  
+                                                   |- BaseType  
+                                                        |- INTEGER  integer
+                                                   |- IdList  
+                                                        |- ID  x
+                                                        |- IdMore  
+                                                             |- ε  
+                                                                  |- ε  ε
+                                                   |- ;  ;
+                                                   |- FieldDecMore  
+                                                        |- FieldDecList  
+                                                             |- BaseType  
+                                                                  |- CHAR  char
+                                                             |- IdList  
+                                                                  |- ID  y
+                                                                  |- IdMore  
+                                                                       |- ,  ,
+                                                                       |- IdList  
+                                                                            |- ID  z
+                                                                            |- IdMore  
+                                                                                 |- ,  ,
+                                                                                 |- IdList  
+                                                                                      |- ID  m
+                                                                                      |- IdMore  
+                                                                                           |- ε  
+                                                                                                |- ε  ε
+                                                             |- ;  ;
+                                                             |- FieldDecMore  
+                                                                  |- ε  
+                                                                       |- ε  ε
+                                              |- END  end
+                               |- ;  ;
+                               |- TypeDecMore  
+                                    |- TypeDecList  
+                                         |- TypeId  
+                                              |- ID  w3
+                                         |- =  =
+                                         |- TypeName  
+                                              |- StructureType  
+                                                   |- ArrayType  
+                                                        |- ARRAY  array
+                                                        |- [  [
+                                                        |- Low  
+                                                             |- INTC  3
+                                                        |- ..  ..
+                                                        |- Top  
+                                                             |- INTC  6
+                                                        |- ]  ]
+                                                        |- OF  of
+                                                        |- BaseType  
+                                                             |- INTEGER  integer
+                                         |- ;  ;
+                                         |- TypeDecMore  
+                                              |- ε  
+                                                   |- ε  ε
+      |- VarDec  
+           |- VarDeclaration  
+                |- VAR  var
+                |- VarDecList  
+                     |- TypeName  
+                          |- BaseType  
+                               |- INTEGER  integer
+                     |- VarIdList  
+                          |- ID  p
+                          |- VarIdMore  
+                               |- ε  
+                                    |- ε  ε
+                     |- ;  ;
+                     |- VarDecMore  
+                          |- VarDecList  
+                               |- TypeName  
+                                    |- ID  w3
+                               |- VarIdList  
+                                    |- ID  c
+                                    |- VarIdMore  
+                                         |- ε  
+                                              |- ε  ε
+                               |- ;  ;
+                               |- VarDecMore  
+                                    |- VarDecList  
+                                         |- TypeName  
+                                              |- ID  w2
+                                         |- VarIdList  
+                                              |- ID  d
+                                              |- VarIdMore  
+                                                   |- ε  
+                                                        |- ε  ε
+                                         |- ;  ;
+                                         |- VarDecMore  
+                                              |- VarDecList  
+                                                   |- TypeName  
+                                                        |- BaseType  
+                                                             |- INTEGER  integer
+                                                   |- VarIdList  
+                                                        |- ID  a
+                                                        |- VarIdMore  
+                                                             |- ε  
+                                                                  |- ε  ε
+                                                   |- ;  ;
+                                                   |- VarDecMore  
+                                                        |- ε  
+                                                             |- ε  ε
+      |- ProcDec  
+           |- ProcDeclaration  
+                |- PROCEDURE  procedure
+                |- ProcName  
+                     |- ID  sd
+                |- (  (
+                |- ParamList  
+                     |- ParamDecList  
+                          |- Param  
+                               |- TypeName  
+                                    |- BaseType  
+                                         |- INTEGER  integer
+                               |- FormList  
+                                    |- ID  s1
+                                    |- FidMore  
+                                         |- ε  
+                                              |- ε  ε
+                          |- ParamMore  
+                               |- ;  ;
+                               |- ParamDecList  
+                                    |- Param  
+                                         |- VAR  var
+                                         |- TypeName  
+                                              |- BaseType  
+                                                   |- INTEGER  integer
+                                         |- FormList  
+                                              |- ID  s2
+                                              |- FidMore  
+                                                   |- ε  
+                                                        |- ε  ε
+                                    |- ParamMore  
+                                         |- ε  
+                                              |- ε  ε
+                |- )  )
+                |- ;  ;
+                |- ProcDecPart  
+                     |- DeclarePart  
+                          |- TypeDec  
+                               |- ε  
+                                    |- ε  ε
+                          |- VarDec  
+                               |- VarDeclaration  
+                                    |- VAR  var
+                                    |- VarDecList  
+                                         |- TypeName  
+                                              |- BaseType  
+                                                   |- INTEGER  integer
+                                         |- VarIdList  
+                                              |- ID  x
+                                              |- VarIdMore  
+                                                   |- ,  ,
+                                                   |- VarIdList  
+                                                        |- ID  y
+                                                        |- VarIdMore  
+                                                             |- ε  
+                                                                  |- ε  ε
+                                         |- ;  ;
+                                         |- VarDecMore  
+                                              |- ε  
+                                                   |- ε  ε
+                          |- ProcDec  
+                               |- ProcDeclaration  
+                                    |- PROCEDURE  procedure
+                                    |- ProcName  
+                                         |- ID  sd1
+                                    |- (  (
+                                    |- ParamList  
+                                         |- ParamDecList  
+                                              |- Param  
+                                                   |- TypeName  
+                                                        |- BaseType  
+                                                             |- INTEGER  integer
+                                                   |- FormList  
+                                                        |- ID  y
+                                                        |- FidMore  
+                                                             |- ε  
+                                                                  |- ε  ε
+                                              |- ParamMore  
+                                                   |- ε  
+                                                        |- ε  ε
+                                    |- )  )
+                                    |- ;  ;
+                                    |- ProcDecPart  
+                                         |- DeclarePart  
+                                              |- TypeDec  
+                                                   |- ε  
+                                                        |- ε  ε
+                                              |- VarDec  
+                                                   |- ε  
+                                                        |- ε  ε
+                                              |- ProcDec  
+                                                   |- ε  
+                                                        |- ε  ε
+                                    |- ProcBody  
+                                         |- ProgramBody  
+                                              |- BEGIN  begin
+                                              |- StmList  
+                                                   |- Stm  
+                                                        |- OutputStm  
+                                                             |- WRITE  write
+                                                             |- (  (
+                                                             |- Exp  
+                                                                  |- Term  
+                                                                       |- Factor  
+                                                                            |- Variable  
+                                                                                 |- ID  y
+                                                                                 |- VariMore  
+                                                                                      |- ε  
+                                                                                           |- ε  ε
+                                                                       |- OtherFactor  
+                                                                            |- ε  
+                                                                                 |- ε  ε
+                                                                  |- OtherTerm  
+                                                                       |- ε  
+                                                                            |- ε  ε
+                                                             |- )  )
+                                                   |- StmMore  
+                                                        |- ε  
+                                                             |- ε  ε
+                                              |- END  end
+                                    |- ProcDecMore  
+                                         |- ε  
+                                              |- ε  ε
+                |- ProcBody  
+                     |- ProgramBody  
+                          |- BEGIN  begin
+                          |- StmList  
+                               |- Stm  
+                                    |- ConditionalStm  
+                                         |- IF  if
+                                         |- RelExp  
+                                              |- Exp  
+                                                   |- Term  
+                                                        |- Factor  
+                                                             |- Variable  
+                                                                  |- ID  a
+                                                                  |- VariMore  
+                                                                       |- ε  
+                                                                            |- ε  ε
+                                                        |- OtherFactor  
+                                                             |- ε  
+                                                                  |- ε  ε
+                                                   |- OtherTerm  
+                                                        |- ε  
+                                                             |- ε  ε
+                                              |- OtherRelE  
+                                                   |- CmpOp  
+                                                        |- =  =
+                                                   |- Exp  
+                                                        |- Term  
+                                                             |- Factor  
+                                                                  |- INTC  2
+                                                             |- OtherFactor  
+                                                                  |- ε  
+                                                                       |- ε  ε
+                                                        |- OtherTerm  
+                                                             |- ε  
+                                                                  |- ε  ε
+                                         |- THEN  then
+                                         |- StmList  
+                                              |- Stm  
+                                                   |- ID  x
+                                                   |- AssCall  
+                                                        |- AssignmentRest  
+                                                             |- VariMore  
+                                                                  |- ε  
+                                                                       |- ε  ε
+                                                             |- :=  :=
+                                                             |- Exp  
+                                                                  |- Term  
+                                                                       |- Factor  
+                                                                            |- Variable  
+                                                                                 |- ID  s1
+                                                                                 |- VariMore  
+                                                                                      |- ε  
+                                                                                           |- ε  ε
+                                                                       |- OtherFactor  
+                                                                            |- MultOp  
+                                                                                 |- *  *
+                                                                            |- Term  
+                                                                                 |- Factor  
+                                                                                      |- (  (
+                                                                                      |- Exp  
+                                                                                           |- Term  
+                                                                                                |- Factor  
+                                                                                                     |- INTC  5
+                                                                                                |- OtherFactor  
+                                                                                                     |- ε  
+                                                                                                          |- ε  ε
+                                                                                           |- OtherTerm  
+                                                                                                |- AddOp  
+                                                                                                     |- +  +
+                                                                                                |- Exp  
+                                                                                                     |- Term  
+                                                                                                          |- Factor  
+                                                                                                               |- INTC  7
+                                                                                                          |- OtherFactor  
+                                                                                                               |- ε  
+                                                                                                                    |- ε  ε
+                                                                                                     |- OtherTerm  
+                                                                                                          |- ε  
+                                                                                                               |- ε  ε
+                                                                                      |- )  )
+                                                                                 |- OtherFactor  
+                                                                                      |- ε  
+                                                                                           |- ε  ε
+                                                                  |- OtherTerm  
+                                                                       |- AddOp  
+                                                                            |- +  +
+                                                                       |- Exp  
+                                                                            |- Term  
+                                                                                 |- Factor  
+                                                                                      |- INTC  10
+                                                                                 |- OtherFactor  
+                                                                                      |- ε  
+                                                                                           |- ε  ε
+                                                                            |- OtherTerm  
+                                                                                 |- ε  
+                                                                                      |- ε  ε
+                                              |- StmMore  
+                                                   |- ε  
+                                                        |- ε  ε
+                                         |- ELSE  else
+                                         |- StmList  
+                                              |- Stm  
+                                                   |- ID  x
+                                                   |- AssCall  
+                                                        |- AssignmentRest  
+                                                             |- VariMore  
+                                                                  |- ε  
+                                                                       |- ε  ε
+                                                             |- :=  :=
+                                                             |- Exp  
+                                                                  |- Term  
+                                                                       |- Factor  
+                                                                            |- Variable  
+                                                                                 |- ID  s1
+                                                                                 |- VariMore  
+                                                                                      |- ε  
+                                                                                           |- ε  ε
+                                                                       |- OtherFactor  
+                                                                            |- MultOp  
+                                                                                 |- /  /
+                                                                            |- Term  
+                                                                                 |- Factor  
+                                                                                      |- INTC  9
+                                                                                 |- OtherFactor  
+                                                                                      |- ε  
+                                                                                           |- ε  ε
+                                                                  |- OtherTerm  
+                                                                       |- ε  
+                                                                            |- ε  ε
+                                              |- StmMore  
+                                                   |- ;  ;
+                                                   |- StmList  
+                                                        |- Stm  
+                                                             |- ID  sd1
+                                                             |- AssCall  
+                                                                  |- CallStmRest  
+                                                                       |- (  (
+                                                                       |- ActParamList  
+                                                                            |- Exp  
+                                                                                 |- Term  
+                                                                                      |- Factor  
+                                                                                           |- Variable  
+                                                                                                |- ID  x
+                                                                                                |- VariMore  
+                                                                                                     |- ε  
+                                                                                                          |- ε  ε
+                                                                                      |- OtherFactor  
+                                                                                           |- ε  
+                                                                                                |- ε  ε
+                                                                                 |- OtherTerm  
+                                                                                      |- ε  
+                                                                                           |- ε  ε
+                                                                            |- ActParamMore  
+                                                                                 |- ε  
+                                                                                      |- ε  ε
+                                                                       |- )  )
+                                                        |- StmMore  
+                                                             |- ε  
+                                                                  |- ε  ε
+                                         |- FI  fi
+                               |- StmMore  
+                                    |- ;  ;
+                                    |- StmList  
+                                         |- Stm  
+                                              |- ReturnStm  
+                                                   |- RETURN  return
+                                                   |- (  (
+                                                   |- Exp  
+                                                        |- Term  
+                                                             |- Factor  
+                                                                  |- INTC  1
+                                                             |- OtherFactor  
+                                                                  |- ε  
+                                                                       |- ε  ε
+                                                        |- OtherTerm  
+                                                             |- ε  
+                                                                  |- ε  ε
+                                                   |- )  )
+                                         |- StmMore  
+                                              |- ε  
+                                                   |- ε  ε
+                          |- END  end
+                |- ProcDecMore  
+                     |- ε  
+                          |- ε  ε
+ |- ProgramBody  
+      |- BEGIN  begin
+      |- StmList  
+           |- Stm  
+                |- LoopStm  
+                     |- WHILE  while
+                     |- RelExp  
+                          |- Exp  
+                               |- Term  
+                                    |- Factor  
+                                         |- Variable  
+                                              |- ID  a
+                                              |- VariMore  
+                                                   |- ε  
+                                                        |- ε  ε
+                                    |- OtherFactor  
+                                         |- ε  
+                                              |- ε  ε
+                               |- OtherTerm  
+                                    |- ε  
+                                         |- ε  ε
+                          |- OtherRelE  
+                               |- CmpOp  
+                                    |- <  <
+                               |- Exp  
+                                    |- Term  
+                                         |- Factor  
+                                              |- INTC  5
+                                         |- OtherFactor  
+                                              |- ε  
+                                                   |- ε  ε
+                                    |- OtherTerm  
+                                         |- ε  
+                                              |- ε  ε
+                     |- DO  do
+                     |- StmList  
+                          |- Stm  
+                               |- ID  sd
+                               |- AssCall  
+                                    |- CallStmRest  
+                                         |- (  (
+                                         |- ActParamList  
+                                              |- Exp  
+                                                   |- Term  
+                                                        |- Factor  
+                                                             |- INTC  2
+                                                        |- OtherFactor  
+                                                             |- ε  
+                                                                  |- ε  ε
+                                                   |- OtherTerm  
+                                                        |- ε  
+                                                             |- ε  ε
+                                              |- ActParamMore  
+                                                   |- ,  ,
+                                                   |- ActParamList  
+                                                        |- Exp  
+                                                             |- Term  
+                                                                  |- Factor  
+                                                                       |- Variable  
+                                                                            |- ID  a
+                                                                            |- VariMore  
+                                                                                 |- ε  
+                                                                                      |- ε  ε
+                                                                  |- OtherFactor  
+                                                                       |- ε  
+                                                                            |- ε  ε
+                                                             |- OtherTerm  
+                                                                  |- ε  
+                                                                       |- ε  ε
+                                                        |- ActParamMore  
+                                                             |- ε  
+                                                                  |- ε  ε
+                                         |- )  )
+                          |- StmMore  
+                               |- ;  ;
+                               |- StmList  
+                                    |- Stm  
+                                         |- ID  c
+                                         |- AssCall  
+                                              |- AssignmentRest  
+                                                   |- VariMore  
+                                                        |- [  [
+                                                        |- Exp  
+                                                             |- Term  
+                                                                  |- Factor  
+                                                                       |- INTC  3
+                                                                  |- OtherFactor  
+                                                                       |- ε  
+                                                                            |- ε  ε
+                                                             |- OtherTerm  
+                                                                  |- ε  
+                                                                       |- ε  ε
+                                                        |- ]  ]
+                                                   |- :=  :=
+                                                   |- Exp  
+                                                        |- Term  
+                                                             |- Factor  
+                                                                  |- Variable  
+                                                                       |- ID  a
+                                                                       |- VariMore  
+                                                                            |- ε  
+                                                                                 |- ε  ε
+                                                             |- OtherFactor  
+                                                                  |- MultOp  
+                                                                       |- *  *
+                                                                  |- Term  
+                                                                       |- Factor  
+                                                                            |- INTC  2
+                                                                       |- OtherFactor  
+                                                                            |- ε  
+                                                                                 |- ε  ε
+                                                        |- OtherTerm  
+                                                             |- ε  
+                                                                  |- ε  ε
+                                    |- StmMore  
+                                         |- ;  ;
+                                         |- StmList  
+                                              |- Stm  
+                                                   |- ID  c
+                                                   |- AssCall  
+                                                        |- AssignmentRest  
+                                                             |- VariMore  
+                                                                  |- [  [
+                                                                  |- Exp  
+                                                                       |- Term  
+                                                                            |- Factor  
+                                                                                 |- Variable  
+                                                                                      |- ID  a
+                                                                                      |- VariMore  
+                                                                                           |- ε  
+                                                                                                |- ε  ε
+                                                                            |- OtherFactor  
+                                                                                 |- ε  
+                                                                                      |- ε  ε
+                                                                       |- OtherTerm  
+                                                                            |- ε  
+                                                                                 |- ε  ε
+                                                                  |- ]  ]
+                                                             |- :=  :=
+                                                             |- Exp  
+                                                                  |- Term  
+                                                                       |- Factor  
+                                                                            |- Variable  
+                                                                                 |- ID  d
+                                                                                 |- VariMore  
+                                                                                      |- .  .
+                                                                                      |- FieldVar  
+                                                                                           |- ID  x
+                                                                                           |- FieldVarMore  
+                                                                                                |- ε  
+                                                                                                     |- ε  ε
+                                                                       |- OtherFactor  
+                                                                            |- ε  
+                                                                                 |- ε  ε
+                                                                  |- OtherTerm  
+                                                                       |- ε  
+                                                                            |- ε  ε
+                                              |- StmMore  
+                                                   |- ;  ;
+                                                   |- StmList  
+                                                        |- Stm  
+                                                             |- InputStm  
+                                                                  |- READ  read
+                                                                  |- (  (
+                                                                  |- Invar  
+                                                                       |- ID  p
+                                                                  |- )  )
+                                                        |- StmMore  
+                                                             |- ε  
+                                                                  |- ε  ε
+                     |- ENDWH  endwh
+           |- StmMore  
+                |- ε  
+                     |- ε  ε
+      |- END  end
+ |- .  .

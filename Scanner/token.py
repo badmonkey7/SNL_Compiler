@@ -25,8 +25,8 @@ class tokenType():
     WRITE="WRITE"
     RETURN="RETURN"
     INTEGER="INTEGER"
+    INTC = "INTC"
     CHAR="CHAR"
-    UNSIGNEDNUMBER="UNSIGNEDNUMBER"
     ADD="+"
     SUB="-"
     MUL="*"
@@ -51,7 +51,7 @@ class tokenType():
     KEYWORDS = ["repeat", "program", "type", "var", "procedure", "begin", "end", "array", "of", "record", "if", "then",
                 "else", "fi", "while", "do", "endwh", "read", "write", "return", "integer", "char"]
     Types = ["repeat", "program", "type", "var", "procedure", "begin", "end", "array", "of", "record", "if", "then",
-                "else", "fi", "while", "do", "endwh", "read", "write", "return", "integer", "char","unsignednumber",
+                "else", "fi", "while", "do", "endwh", "read", "write", "return", "integer", "char","intc",
              "+","-","*","/","<","=","(",")","{","}","[","]",".",";","EOF"," ",":=","'","..",",","ID"]
 
 class Token():

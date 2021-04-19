@@ -28,6 +28,9 @@ class AstNode(object):
     def getTokenVal(self):
         return self.tokenVal
 
+    def isTokenVal(self,tokenVal):
+        return self.tokenVal == tokenVal
+
     def getId(self):
         return self.id
 

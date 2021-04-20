@@ -264,7 +264,7 @@ def generateAST(tokens):
             if choice == "error":
                 done = True
                 error = True
-                print("error",token)
+                print("error",token,top,tokenType)
                 break
             else:
                 # for

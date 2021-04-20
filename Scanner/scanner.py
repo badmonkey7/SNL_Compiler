@@ -111,24 +111,7 @@ if __name__ == '__main__':
     for i in tokens:
         out.write(str(i)+"\n")
     out.close()
-    # if len(sys.argv) <2:
-    #     print(HELP)
-    # elif len(sys.argv) ==2:
-    #     filename = sys.argv[1]
-    #     output = filename.split('.')[0]+"_scan.txt"
-    # else:
-    #     filename = sys.argv[1]
-    #     output = sys.argv[2]
-    # try:
-    #     scanner = list(open(filename,"r").read())
-    #     tokens = Scan(scanner)
-    #     out = open(output,"w")
-    #     for i in tokens:
-    #         out.write(str(i)+"\n")
-    #     out.close()
-    # except:
-    #     print("file not exist or permission denied\n")
-    #     exit(1)
+
 
 
 

@@ -13,8 +13,8 @@ class Symbol(object):
     """
     def __init__(self,name=None,kind=None,type=None,value=None,access=None,level=None,offset=None,param=None,Class=None,code=None,Size=None,forward=None):
         self.name = name
-        self.kind = kind
-        self.type = type
+        self.decKind = kind
+        self.typePtr = type
         self.value = value
         self.access = access
         self.level = level
@@ -26,7 +26,7 @@ class Symbol(object):
         self.forward = forward
 
     def __repr__(self):
-        return "%s %s %s "%(self.name,self.kind,self.type)
+        return "%s %s %s "%(self.name,self.decKind,self.typePtr)
 
 class SymbolTable(object):
     def __init__(self):
@@ -73,14 +73,17 @@ class SymbolTable(object):
 
 
 class BaseType(object):
-    def __init__(self,sz,kind):
+    def __init__(self,sz=1,kind=None):
         self.sz = sz
-        self.kind = kind
+        self.type = kind
+
+    def __repr__(self):
+        return self.type
 
 class ArrayType(object):
     def __init__(self,sz=None,low=None,top=None,element=None):
         self.sz = sz
-        self.kind = "arrayType"
+        self.type = "arrayType"
         self.low = low
         self.top = top
         self.element = element
@@ -89,53 +92,13 @@ class ArrayType(object):
 
 class RecordType(object):
     def __init__(self,sz=None,fieldList=None):
-        self.kind = "recordType"
+        self.type = "recordType"
         self.sz = sz
         self.fieldList = fieldList
 
     def __repr__(self):
         return "record %s"%(self.fieldList)
 
-
-class Field(object):
-    def __init__(self,name=None,type=None,off=None,link=None,value=None):
-        self.name = name
-        self.type = type
-        self.off = off
-        self.link = link
-        self.value = value
-
-    def __repr__(self):
-        return "%s %s"%(self.name,self.type)
-
-class FieldList(object):
-    def __init__(self):
-        self.List = []
-
-    def append(self,field):
-        self.List.append(field)
-
-    def __len__(self):
-        return len(self.List)
-
-    def __contains__(self, item):
-        for i in self.List:
-            if i.name == item:
-                return True
-        return False
-
-    def __repr__(self):
-        return " ".join([str(i) for i in self.List])
-
-    def __getitem__(self, item):
-        return self.List[item]
-
-    def get(self, name):
-        length = len(self.List)
-        for i in range(length):
-            if self.List[i].name == name:
-                return self.List[i]
-        return None
 
 
 

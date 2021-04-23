@@ -23,10 +23,6 @@ class semanticError(object):
     undefinedField = "undefined field"
     invalidAssignLeft = "invalid assignment %s is not variable"
     invalidAssignRight = "invalid assignment %s is not %s type"
-    # arrayOut = "index out of array bound"
-    # invalidMember = "invalid member access"
-    # assignmentTypeError = "invalid assginment variable type do not match"
-    # assignmentVariableError = "invalid assignment; the left side of the assginment is not variable"
     paramTypeError = "procedure param type do not match expect %s got %s"
     paramNumError = "procedure param number do not match expect %d params got %d params"
     procedureCallError  = "can not be called"
@@ -170,14 +166,6 @@ class Analyzer(object):
                     else:
                         pass
                     self.stepInto("TypeDecMore")
-                # self.step()
-
-
-
-        # type = self.typeName()
-        # print("debug",type.type)
-
-        pass
 
     def varDec(self):
         self.stepInto("VarDec")
@@ -449,7 +437,6 @@ class Analyzer(object):
             # pass
         elif choice == "BaseType":
             return self.baseType()
-            # pass
         elif choice == "StructureType":
             """
             两种情况 ArrayType 或者  RecType
@@ -458,7 +445,6 @@ class Analyzer(object):
             self.stepInto(structType)
             if structType == "ArrayType":
                 return self.arrayType()
-                # pass
             elif structType == "RecType":
                 fieldList = SymbolTable()
                 self.stepInto("RECORD")
@@ -489,9 +475,6 @@ class Analyzer(object):
                                     fieldList.add(sym)
                                 self.stepInto("IdMore")
                         self.stepInto("FieldDecMore")
-                        # print("debug", self.current)
-
-                    # self.step()
                 self.stepInto("END")
                 recType = RecordType(fieldList=fieldList)
                 return recType
@@ -642,12 +625,6 @@ class Analyzer(object):
                             return None,None
                         else:
                             return field.typePtr.element.type,None
-
-
-
-
-            # if fieldName not in var
-        # pass
     def conditionalStm(self):
         self.stepInto("IF")
         condition = self.relExp()
@@ -680,12 +657,10 @@ class Analyzer(object):
         self.stepInto("OutputStm")
         self.stepInto("WRITE")
         self.expresion()
-        # pass
     def returnStm(self):
         self.stepInto("ReturnStm")
         self.stepInto("RETURN")
         self.expresion()
-        # pass
     def relExp(self):
         """
 
@@ -704,12 +679,6 @@ class Analyzer(object):
         else:
             return True
 
-
-
-
-
-
-
 if __name__ == '__main__':
     scanner = list(open("source.txt","r").read())
     tokens = Scan(scanner)
@@ -727,7 +696,6 @@ if __name__ == '__main__':
     astfile.close()
     analyzer = Analyzer(tokens,root)
     analyzer.analyze()
-    # print("*"*100)
     # print(analyzer.scope)
     # print(analyzer.symTable)
 

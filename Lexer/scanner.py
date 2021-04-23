@@ -15,7 +15,7 @@ class State():
     RANGE="range"
     DONE="done"
 
-from Scanner.token import *
+from Lexer.token import *
 
 import sys
 

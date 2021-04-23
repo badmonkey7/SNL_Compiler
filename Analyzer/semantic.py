@@ -6,7 +6,7 @@
 '''
 from Parser.AST import *
 from Parser.LL1 import *
-from Scanner.scanner import *
+from Lexer.scanner import *
 from Analyzer.symbol import *
 
 class myState():
@@ -130,7 +130,8 @@ class Analyzer(object):
         self.typeDec()
         self.varDec()
         self.procDec()
-        pass
+        # print(self.scope)
+        # pass
 
     def programBody(self):
         self.stepInto("BEGIN")
@@ -209,7 +210,6 @@ class Analyzer(object):
         else:
             while True:
                 if self.current.isTokenType("ProcDecMore") and self.current.firstChild().isTokenType("ε"):
-                    # self.symTable = curSymTab
                     break
                 else:
                     self.stepInto("ProcName")
@@ -239,6 +239,9 @@ class Analyzer(object):
                             else:
                                 self.stepInto("Param")
                                 typeName = self.typeName()
+                                typeError = False
+                                if typeName == None:
+                                    typeError = True
                                 self.stepInto("FormList")
                                 while True:
                                     if self.current.isTokenType("FidMore") and self.current.firstChild().isTokenType("ε"):
@@ -247,7 +250,7 @@ class Analyzer(object):
                                         self.stepInto("ID")
                                         param = Symbol(kind="varDec",name=self.current.getTokenVal(),type=typeName)
                                         proc.param.add(param)
-                                        if not procError:
+                                        if not procError and not typeError:
                                             if param.name not in self.symTable:
                                                 self.symTable.add(param)
                                             else:
@@ -402,15 +405,15 @@ class Analyzer(object):
                                     self.errorMessage = semanticError.paramNumError%(paramLen,actParamLen)
                                     self.printError(var)
                                 else:
-                                    # param type do not match
                                     for i in range(paramLen):
+                                        if paramList[i].typePtr == None:
+                                            continue
                                         expect = paramList[i].typePtr.type
                                         got = actParamList[i]
                                         if not self.assignTypeCheck(expect,got):
                                             self.error = True
                                             self.errorMessage = semanticError.typeMatchError%(expect,got)
                                             self.printError()
-                # print(self.currenLine())
                 self.stepInto("StmMore")
 
         pass
@@ -584,6 +587,7 @@ class Analyzer(object):
                 return None,None
             else:
                 # 可能会返回 数组 和 结构ti类型
+                # print("debug",var)
                 return var.typePtr.type,var.value
         elif choice == "[":
             return self.expresion()

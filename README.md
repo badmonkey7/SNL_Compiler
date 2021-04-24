@@ -30,6 +30,10 @@
 
 ![ast](Parser/ast.png)
 
+符号表
+
+![symbolTable](Analyzer/symTable.png)
+
 ## 参考链接
 
 `snl semantic errors`

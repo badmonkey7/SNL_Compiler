@@ -683,6 +683,176 @@ class Analyzer(object):
         else:
             return True
 
+def displaySymTable(analyzer,scope=True):
+    INT = BaseType(kind="INTEGER")
+    CHAR = BaseType(kind="CHAR")
+    from graphviz import Digraph
+    symTable = Digraph(name="symTable", format="png")
+    symTable.node_attr["shape"] = "record"
+    symTable.graph_attr["rankdir"] = "LR"
+    payload = ""
+    element = []
+    symNum = 0
+    arrayNum = 0
+    recordNum = 0
+    procNum = 0
+    hasInteger = False
+    hasChar = False
+    length = len(analyzer.scope)
+    for level in range(length):
+        currentSymTable = analyzer.scope[level]
+        if level != 0:
+            currentSymTable.pop(0)
+        for sym in currentSymTable:
+            if sym.typePtr == None and sym.decKind == "procDec":
+                paramList = sym.param
+                element.append("{%s|procDec|<paramList%d> paramList}" % (sym.name, procNum))
+                # symTable.node(name="proc%d"%procNum,label="{%s|procDec|<paramList%d> paramList}"%(sym.name,procNum))
+                symTable.edge("element:paramList%d" % (procNum), "paramList%d" % procNum)
+                params = []
+                for param in paramList:
+                    paramType = param.typePtr.type
+                    if paramType == "INTEGER":
+                        if hasInteger:
+                            pass
+                        else:
+                            symTable.node(name="INTEGER", label="{%d|%s}" % (INT.sz, INT.type))
+                    elif paramType == "CHAR":
+                        if hasChar:
+                            pass
+                        else:
+                            symTable.node(name="CHAR", label="{%d|%s}" % (CHAR.sz, CHAR.type))
+                    elif paramType == "recordType":
+                        paramType = "record%d" % recordNum
+                        record = param.typePtr
+                        symTable.node(name=paramType, label="{record|<fieldList%d> fieldList}" % recordNum)
+                        symTable.edge("record%d:fieldList%d" % (recordNum, recordNum), "fieldList%d" % recordNum)
+                        fieldList = record.fieldList
+                        fields = []
+                        for field in fieldList:
+                            fieldType = field.typePtr.type
+                            if fieldType == "INTEGER":
+                                if hasInteger:
+                                    pass
+                                else:
+                                    symTable.node(name="INTEGER", label="{%d|%s}" % (INT.sz, INT.type))
+                            elif fieldType == "CHAR":
+                                if hasChar:
+                                    pass
+                                else:
+                                    symTable.node(name="CHAR", label="{%d|%s}" % (CHAR.sz, CHAR.type))
+                            elif fieldType == "arrayType":
+                                fieldType = "array%d" % arrayNum
+                                array = field.typePtr
+                                symTable.node(name="array%d" % arrayNum,
+                                              label="{array|sz:%d|low:%d|top:%d|<elementPtr%d> type}" % (
+                                                  array.sz, array.low, array.top, arrayNum))
+                                elementType = array.element.type
+                                if elementType == "CHAR" and not hasChar:
+                                    symTable.node(name="CHAR", label="{%d|%s}" % (CHAR.sz, CHAR.type))
+                                elif elementType == "INTEGER" and not hasInteger:
+                                    symTable.node(name="INTEGER", label="{%d|%s}" % (INT.sz, INT.type))
+                                symTable.edge("array%d:elementPtr%d" % (arrayNum, arrayNum), array.element.type)
+                                arrayNum += 1
+                            fields.append("{%s|%s|<typePtr%d>type}" % (field.name, field.decKind, symNum))
+                            symTable.edge("fieldList%d:typePtr%d" % (recordNum, symNum), fieldType)
+                            symNum += 1
+                        symTable.node(name="fieldList%d" % recordNum, label="|".join(fields))
+                        recordNum += 1
+                    elif paramType == "arrayType":
+                        paramType = "array%d" % arrayNum
+                        array = param.typePtr
+                        symTable.node(name="array%d" % arrayNum, label="{array|sz:%d|low:%d|top:%d|<elementPtr%d> type}" % (
+                            array.sz, array.low, array.top, arrayNum))
+                        elementType = array.element.type
+                        if elementType == "CHAR" and not hasChar:
+                            symTable.node(name="CHAR", label="{%d|%s}" % (CHAR.sz, CHAR.type))
+                        elif elementType == "INTEGER" and not hasInteger:
+                            symTable.node(name="INTEGER", label="{%d|%s}" % (INT.sz, INT.type))
+                        symTable.edge("array%d:elementPtr%d" % (arrayNum, arrayNum), array.element.type)
+                        arrayNum += 1
+                    else:
+                        continue
+                    params.append("{%s|%s|<typePtr%d>type}" % (param.name, param.decKind, symNum))
+                    symTable.edge("paramList%d:typePtr%d" % (procNum, symNum), paramType)
+                    symNum += 1
+                symTable.node("paramList%d" % procNum, label="|".join(params))
+                continue
+            symType = sym.typePtr.type
+            if symType == "INTEGER":
+                if hasInteger:
+                    pass
+                else:
+                    symTable.node(name="INTEGER", label="{%d|%s}" % (INT.sz, INT.type))
+            elif symType == "CHAR":
+                if hasChar:
+                    pass
+                else:
+                    symTable.node(name="CHAR", label="{%d|%s}" % (CHAR.sz, CHAR.type))
+            elif symType == "recordType":
+                symType = "record%d" % recordNum
+                record = sym.typePtr
+                symTable.node(name=symType, label="{record|<fieldList%d> fieldList}" % recordNum)
+                symTable.edge("record%d:fieldList%d" % (recordNum, recordNum), "fieldList%d" % recordNum)
+                fieldList = record.fieldList
+                fields = []
+                for field in fieldList:
+                    fieldType = field.typePtr.type
+                    if fieldType == "INTEGER":
+                        if hasInteger:
+                            pass
+                        else:
+                            symTable.node(name="INTEGER", label="{%d|%s}" % (INT.sz, INT.type))
+                    elif fieldType == "CHAR":
+                        if hasChar:
+                            pass
+                        else:
+                            symTable.node(name="CHAR", label="{%d|%s}" % (CHAR.sz, CHAR.type))
+                    elif fieldType == "arrayType":
+                        fieldType = "array%d" % arrayNum
+                        array = field.typePtr
+                        symTable.node(name="array%d" % arrayNum, label="{array|sz:%d|low:%d|top:%d|<elementPtr%d> type}" % (
+                        array.sz, array.low, array.top, arrayNum))
+                        elementType = array.element.type
+                        if elementType == "CHAR" and not hasChar:
+                            symTable.node(name="CHAR", label="{%d|%s}" % (CHAR.sz, CHAR.type))
+                        elif elementType == "INTEGER" and not hasInteger:
+                            symTable.node(name="INTEGER", label="{%d|%s}" % (INT.sz, INT.type))
+                        symTable.edge("array%d:elementPtr%d" % (arrayNum, arrayNum), array.element.type)
+                        arrayNum += 1
+                    fields.append("{%s|%s|<typePtr%d>type}" % (field.name, field.decKind, symNum))
+                    symTable.edge("fieldList%d:typePtr%d" % (recordNum, symNum), fieldType)
+                    symNum += 1
+                symTable.node(name="fieldList%d" % recordNum, label="|".join(fields))
+                recordNum += 1
+                # symTable.node(name="fieldList%d"%recordNum,label=)
+                # pass
+            elif symType == "arrayType":
+                symType = "array%d" % arrayNum
+                array = sym.typePtr
+                symTable.node(name="array%d" % arrayNum, label="{array|sz:%d|low:%d|top:%d|<elementPtr%d> type}" % (
+                array.sz, array.low, array.top, arrayNum))
+                elementType = array.element.type
+                if elementType == "CHAR" and not hasChar:
+                    symTable.node(name="CHAR", label="{%d|%s}" % (CHAR.sz, CHAR.type))
+                elif elementType == "INTEGER" and not hasInteger:
+                    symTable.node(name="INTEGER", label="{%d|%s}" % (INT.sz, INT.type))
+                symTable.edge("array%d:elementPtr%d" % (arrayNum, arrayNum), array.element.type)
+                arrayNum += 1
+            else:
+                continue
+            element.append("{%s|%s|<typePtr%d>type}" % (sym.name, sym.decKind, symNum))
+            symTable.edge("element:typePtr%d" % symNum, symType)
+            symNum += 1
+        if not scope:
+            break
+
+
+    payload = "|".join(element)
+    symTable.node(name="element", label=payload)
+    # print(symTable.source)
+    symTable.render("symTable", view=True)
+
 if __name__ == '__main__':
     scanner = list(open("source.txt","r").read())
     tokens = Scan(scanner)
@@ -700,6 +870,8 @@ if __name__ == '__main__':
     astfile.close()
     analyzer = Analyzer(tokens,root)
     analyzer.analyze()
-    # print(analyzer.scope)
-    # print(analyzer.symTable)
+    displaySymTable(analyzer,False)
+
+
+
 

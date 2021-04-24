@@ -41,8 +41,8 @@ class SymbolTable(object):
                 return True
         return False
 
-    def pop(self):
-        self.table.pop()
+    def pop(self,pos):
+        self.table.pop(pos)
 
     def remove(self,name):
         length = len(self.table)

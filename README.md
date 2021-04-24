@@ -24,6 +24,12 @@
 	- [x] 过程调用，参数类型不匹配
 	- [x] if，while条件语句不是bool类型
 
+## 效果展示
+
+语法树
+
+![ast](Parser/ast.png)
+
 ## 参考链接
 
 `snl semantic errors`
@@ -38,3 +44,6 @@ https://blog.csdn.net/xuelians/article/details/79999284
 
 https://tech.viewv.top/2019/10/31/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E4%B8%8ELL1%E6%96%87%E6%B3%95python%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0%E4%B8%8E%E6%84%9F%E6%83%B3.html#%E5%AE%8C%E6%95%B4%E7%A8%8B%E5%BA%8F
 
+`display ast`
+
+https://graphviz.org/

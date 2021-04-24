@@ -275,13 +275,41 @@ def generateAST(tokens):
                 current = current.child[0]
     return root
 
+def display(root):
+    current = root
+    from graphviz import Digraph
+    graph = Digraph(name="ast", format="png")
+    stack = []
+    stack.append(current)
+    while stack:
+        node = stack.pop(0)
+        color = "black"
+        name = "node" + str(node.getId())
+        label = node.getTokenType()
+        if label == "ε":
+            color = "yellow"
+        elif label in grammar["VT"]:
+            color = "red"
+            if label in ["INTC", "ID"]:
+                label = label + "\n" + str(node.getTokenVal())
+        else:
+            pass
+
+        graph.node(name=name, label=label, color=color)
+        for child in node.child:
+            sonName = "node" + str(child.getId())
+            stack.append(child)
+            graph.edge(name, sonName)
+    graph.render("ast",view=True)
+
 if __name__ == '__main__':
+
     tokens = open("demo.txt",'r').readlines()
     root = generateAST(tokens)
     ast = open("ast.txt","w")
     root.dump(file=ast)
     ast.close()
-
+    # display(root)
 
 
 

@@ -63,7 +63,12 @@ class AstNode(object):
             cur = cur.father
         if cur.id != 0:
             cur = cur.brother[cur.brother.index(cur)+1]
+        # else:
+        #     cur = cur.firstChild()
         return cur
+
+
+
 
     def __len__(self):
         return len(self.child)

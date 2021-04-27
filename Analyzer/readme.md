@@ -219,7 +219,6 @@ ReturnStm -> RETURN ( Exp )
 ```text
 Stm -> ID AssCall
 AssCall -> AssignmentRest
-AssCall -> AssignmentRest
 AssignmentRest -> VariMore := Exp
 ```
 

@@ -571,9 +571,11 @@ class Analyzer(object):
         varName = self.current.getTokenVal()
         var = None
         varError = False
+        print(self.scope[::-1])
         for symTable in self.scope[::-1]:
             if varName in symTable:
                 var = symTable.get(varName)
+                break
         if var == None:
             varError = True
             self.error = True
@@ -865,12 +867,16 @@ if __name__ == '__main__':
     index = 0
     root = generateAST(tokens)
     tokens = [eval(token) for token in tokens]
+    import json
     astfile = open("ast.txt","w")
-    root.dump(file=astfile)
+    json.dump(root,astfile,cls=AstNodeEncoder)
+
+    # root.dump(file=astfile)
     astfile.close()
     analyzer = Analyzer(tokens,root)
     analyzer.analyze()
-    displaySymTable(analyzer,False)
+    displaySymTable(analyzer,True)
+    # print(analyzer.scope[::-1])
 
 
 

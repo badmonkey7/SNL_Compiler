@@ -309,7 +309,7 @@ if __name__ == '__main__':
     ast = open("ast.txt","w")
     root.dump(file=ast)
     ast.close()
-    # display(root)
+    display(root)
 
 
 

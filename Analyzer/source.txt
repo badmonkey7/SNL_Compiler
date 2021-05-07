@@ -1,29 +1,45 @@
-{输入n,r  ; 从前n个自然数中取r个数作组合}
-program combination
-type  
-    s=array [1..20] of integer;
-var 
-    s  a;
-    integer n,r;
-procedure  com(integer s,j);
-var integer i,k;
+{ This program contains lots of semantic errors }
+
+program program3
+type t1 = integer;
+     t2 = tnotexist;             { Undefined Type }               { implemented }
+var integer                  test1, test2;
+    char                     ch;
+    array [15..5] of integer t1; { Invalid Array Definition }     { implemented }
+                                 { Duplicated Identifier }        { implemented }
+
+procedure proc(integer param1);
+  var integer param1    { Duplicated Identifier }                 { implemented }
+            , param2
+            , proc;     { Duplicated Identifier }                 { implemented }
+      char    param3;
+  begin
+    notexist := param1; { Invalid Assignee }                      { implemented }
+    param3 := param2;   { Assign Type Mismatch }                  { implemented }
+    param3 := 10        { Assign Type Mismatch }                  { implemented }
+  end
+
+procedure recordtest();
+  var record
+        integer fieldA, fieldB;
+        array [0..10] of integer fieldArray;
+      end
+              rec1, rec2;
+      char    testCh;
+  begin
+      write(rec1.fieldArray[5]);
+      write(rec1.fieldArray2[5]);      { Undefined Record Field } { implemented }
+      write(rec1.fieldArray[testCh])   { Uncompatable Type }      { implemented }
+  end
+
+procedure test1();      { Duplicated Identifier }                 { implemented }
+  begin
+    test1()             { No error, though it will cause stack overflow }
+  end
+
 begin
-   i:=s;
-   while i<n+2-j  do
-     a[r+1-j]:=i;
-     if j<2
-     then  k:=1;
-           while k<r+1 do
-             write(a[k]);
-             k:=k+1
-           endwh
-     else  com(i+1,j-1)
-     fi;
-     i:=i+1
-   endwh
-end
-begin
-read(n); {n为组合的界限}
-read(r); {r为组合数}
-com(1,r)
+  proc();               { Call Parameter Count Mismatch }         { implemented }
+  proc(ch);             { Call Parameter Type Mismatch }          { implemented }
+  proc(0);
+  test1()               { Unexpected Type }                       { implemented }
 end.

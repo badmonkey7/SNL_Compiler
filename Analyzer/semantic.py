@@ -266,8 +266,6 @@ class Analyzer(object):
                     self.programBody()
                     self.symTable = curSymTab
                     self.stepInto("ProcDecMore")
-
-
     def stmList(self):
         self.stepInto("Stm")
         while True:
@@ -571,7 +569,7 @@ class Analyzer(object):
         varName = self.current.getTokenVal()
         var = None
         varError = False
-        print(self.scope[::-1])
+        # print(self.scope[::-1])
         for symTable in self.scope[::-1]:
             if varName in symTable:
                 var = symTable.get(varName)
